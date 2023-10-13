@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChimJoy</title>
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+    <link rel="stylesheet" href="{% static '/css/forms.css' %}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+
+  
+    <style>
+   
+
+      select {
+          width: 100%;
+          padding: 10px;
+          margin-bottom: 15px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          font-size: 19px;
+      }
+
+      /* Style the "Use My Location" button */
+      /* button[type="button"] {
+          background-color: #4CAF50;
+      } */
+
+      /* Style the nearby locations lists */
+      select[multiple] {
+          height: 100px;
+      }
+
+      @media screen and (max-width: 600px) {
+          /* Responsive design for smaller screens */
+          form {
+              width: 95%;
+              max-width: 350px;
+          }
+      }
+      #pickupNearby, #destinationNearby {
+            display: none;
+        }
+ 
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* .tabs a.active {
+  font-weight: bold;
+} */
+
+.tab-content {
+  display: none;
+}
+.tab-content p{
+    font-size: 16px; 
+}
+.tab-content--active {
+  display: block;
+}
+
+.tabs {
+  position: relative;
+  display: flex;
+  flex-grow: 1;
+  flex-wrap: nowrap;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.tabs > a {
+  position: relative;
+  display: flex;
+  text-decoration: none;
+  padding: 8px 16px;
+  /* font-size: 14px; */
+  font-weight: 600;
+  /* color: var(--gray-mid); */
+  text-align: left;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+}
+
+
+
+.tabs > .active {
+  font-weight: 700;
+  outline: none;
+  color:#FFF;
+  background-color: #28a745;
+  border-radius: 15px;
+  /* margin-bottom: -1px;
+  border-bottom: 1px solid var(--gray-dark); */
+}
+
+
+.tabs a {
+    font-size: 2rem;
+    color: white;
+  }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- header section starts  -->
+
+    <header class="header">
+
+        <div id="menu-btn" class="fas fa-bars"></div>
+
+        <a data-aos="zoom-in-left" data-aos-delay="150" href="#" class="logo"><span>CHIM</span>JOY
+        </a>
+
+        <nav class="navbar">
+            <a data-aos="zoom-in-left" data-aos-delay="300" href="{% url 'dashboard' %}">Home</a>
+            <a data-aos="zoom-in-left" data-aos-delay="1150" href="{% url 'booking' %}" style="color: #007bff; ">Ride</a>
+            <a data-aos="zoom-in-left" data-aos-delay="1150" href="{% url 'carlist' %}">Rent</a>
+            <a data-aos="zoom-in-left" data-aos-delay="450" href="{% url 'about' %}">About us</a>
+            <a data-aos="zoom-in-left" data-aos-delay="600" href="{% url 'contact' %}">Contact us</a >
+               
+                 
+    
+    
+        </nav>
+
+        <!-- <div class="user-profile">
+        <div class="profile-dropdown">
+            <img src="./asset/img/5da839b0c6b3d.png" alt="User Profile" class="profile-img">
+            <div class="user-info">
+                <span class="user-name">John Doe</span>
+                <span class="user-email">john@example.com</span>
+            </div>
+            <div class="dropdown-icon"><i class="fas fa-chevron-down"></i></div>
+            <div class="dropdown-content">
+                <ul class="user-details">
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="#">Settings</a></li>
+                    <li><a href="#">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+        </div> -->
+    </header>
+      <!-- Loop through messages -->
+      {% for message in messages %}
+      <div class="alert alert-success">
+          <strong>{{ message }}</strong>
+      </div>
+      {% endfor %}
+
+    <section class="home" id="home">
+
+        <div class="content">
+            <span data-aos="zoom-in" data-aos-delay="150">Ride in Style</span>
+            <p data-aos="fade-up" data-aos-delay="450">We've got you covered, just book your spot in our fleet today. We are a trusted partner for you. Set your location and your choice of destination, Receive a confirmation of your booking instantly, giving you peace of mind. Your Relaible Ride awaits you </p>
+            <a data-aos="fade-up" data-aos-delay="300" href="{% url 'carlist' %}" class="btn">Rent a Car Now</a>
+            <a data-aos="fade-up" data-aos-delay="300" href="{% url 'contact' %}" class="btn" >Contact Us</a>
+           
+        </div>
+
+    </section>
+
+
+      <div class="container" style="padding: 7%;">
+        <header>
+            <div class="tabs" style=" background-color: #007BFF;padding: 1.5%; box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.3);">
+                
+                <a id="tab1" href="#tab1">
+                    Ride
+                    
+                </a>
+                <a id="tab2" href="#tab2">
+                    Logistics
+                </a>
+               
+            </div>
+        </header>
+        <div class="tab-content-wrapper">
+            <div id="tab1-content" class="tab-content">
+             
+                <div class="book-contaner">
+                <div class="form">
+        
+                  
+                 <div class="contact-info">
+                    <section class="about" id="about">
+                        
+                    <div class="content" data-aos="fade-right" data-aos-delay="300">
+                            <!-- <img src="./assets/images/african-american-business-man-car.jpg" class="image" style="border-radius:0%;">
+                        </div> -->
+                        <h3 style="color: #007bff;"> Ride Booking Form </h3>
+                        
+                        <p style="color: #000;">
+                            Ready to Ride?
+
+                            Simply fill out the form on this page with your ride details, and we'll take care of the rest. Your journey with CHIMJOY will be a smooth, stress-free experience.
+
+                            Don't miss out on the opportunity to experience transportation excellence. Book your ride today, and let us get you to your destination safely and comfortably.
+                        </p>
+
+                        <p style="color: #000;"> "Your privacy is important to us. Your information will be kept confidential and used solely for the purpose of this ride booking. </p>
+                            <h3 style="color: #007BFF;">Need assistance?</h3>
+                            <p>
+                                Our dedicated customer support team is available around the clock to assist you.
+                            </p>
+                            <a data-aos="fade-up" data-aos-delay="300" href="{% url 'contact' %}" class="btn">Contact Us</a>
+                        </div>
+                
+                    </section>
+                  </div>
+                  
+                  <div class="ride-form">       
+                    <form method="post" action="{% url 'booking' %}" class="conc">
+                      {% csrf_token %}
+                      <div class="booking-container">
+                        <label for="{{ form.model.id_for_label }}">Select Vehicle Model:</label>
+                        {{ form.model }}
+                      </div>
+
+                      <div class="booking-container">
+                        <label for="{{ form.email.id_for_label }}">Email:</label>
+                        {{ form.email }}
+                       </div>
+
+                      <div class="booking-container">
+                        <label for="{{ form.phone_number.id_for_label }}">Phone Number:</label>
+                        {{ form.phone_number }}
+                      </div>
+                      <!-- <button onclick="getCurrentLocation()" class="btn" style="background-color: #28a745;">Use My Location</button> -->
+                      <div class="booking-container">
+                          <label for="{{ form.pickup.id_for_label }}">Pickup Location:</label>
+                          {{ form.pickup_location }}
+                      </div>
+
+                      <div class="booking-container">
+                          <label for="{{ form.destination.id_for_label }}">Destination:</label>
+                          {{ form.destination }}
+                      </div>
+                      
+                      <div class="booking-container">
+                          <label for="{{ form.date.id_for_label }}">Date:</label>
+                          {{ form.date }}
+                      </div>
+                      
+                      <div class="booking-container"> 
+                          <label for="{{ form.time.id_for_label }}">Time:</label>
+                          {{ form.time }}
+                      </div>
+                      
+                      <input type="submit" value="Book Ride" class="buttons" />
+                  </form>
+                    </div>
+                </div>
+              </div>
+                
+            </div>
+            <div id="tab2-content" class="tab-content">
+                <div class="book-contaner">
+                    <div class="form">
+               
+                      <div class="ride-form">    
+                        
+                        <form method="post" action="{% url 'booking' %}" class="conc">
+                          {% csrf_token %}
+
+                          <div class="booking-container">
+                            <label for="{{ form.model.id_for_label }}">Select Vehicle Model:</label>
+                            {{ form.model }}
+                         </div>
+
+                         <div class="booking-container">
+                          <label for="{{ form.email.id_for_label }}">Email:</label>
+                          {{ form.email }}
+                         </div>
+
+
+                         <div class="booking-container">
+                          <label for="{{ form.phone_number.id_for_label }}">Phone Number:</label>
+                          {{ form.phone_number }}
+                         </div>
+
+                          <!-- <button onclick="getCurrentLocation()" class="btn" style="background-color: #28a745;">Use My Location</button> -->
+                          <div class="booking-container">
+                              <label for="{{ form.pickup.id_for_label }}">Pickup Location:</label>
+                              {{ form.pickup_location }}
+                          </div>
+    
+                          <div class="booking-container">
+                              <label for="{{ form.destination.id_for_label }}">Destination:</label>
+                              {{ form.destination }}
+                          </div>
+                          
+                          <div class="booking-container">
+                              <label for="{{ form.date.id_for_label }}">Date:</label>
+                              {{ form.date }}
+                          </div>
+                          
+                          <div class="booking-container"> 
+                              <label for="{{ form.time.id_for_label }}">Time:</label>
+                              {{ form.time }}
+                          </div>
+                          
+                          <input type="submit" value="Book Ride" class="buttons" />
+                      </form>
+                        </div>
+                        <div class="contact-info">
+                            <section class="about" id="about">
+                                
+                            <div class="content" data-aos="fade-right" data-aos-delay="300">
+                                    <!-- <img src="./assets/images/african-american-business-man-car.jpg" class="image" style="border-radius:0%;">
+                                </div> -->
+                                <h3 style="color: #007bff;"> Logistics  Form </h3>
+                                
+                                <p style="color: #000;">
+                                    At CHIMJOY, we're committed to providing you with a convenient and reliable transportation and logistics experience. We understand that getting your goods  from point A to point B should be effortless, and that's why we're here to make it happen for you.
+        
+                                    Our user-friendly form takes seconds to fill out. Just provide us with a few details, and you're on your way
+                                </p>
+        
+                                <p style="color: #000;"> Quality logistics doesn't have to break the bank. We offer competitive rates to make transportation of your goods cost-effective without compromising on comfort or service quality.</p>
+                                    <h3 style="color: #007BFF;">Need assistance?</h3>
+                                    <p>
+                                        Our dedicated customer support team is available around the clock to assist you.
+                                    </p>
+                                    <a data-aos="fade-up" data-aos-delay="300" href="{% url 'contact' %}" class="btn">Contact Us</a>
+                                </div>
+                        
+                            </section>
+                          </div>
+               
+                    </div>
+                  
+                  </div>
+            </div>
+           
+        </div>
+    </div>  
+   
+     
+    <div class="faq-container">
+        
+        <div class="heading">
+          <span>Frequently asked Questions</span>
+          <h1>Quick Answers</h1>
+      </div>
+        <details>
+           
+          <summary>
+            <span class="faq-title">
+                How do I rent a vehicle on this website?
+            </span>
+            <img src="{% static '/assets/images/plus.svg' %}" class="expand-icon" />
+          </summary>        
+          <div class="faq-content">
+            To rent a vehicle, click on the "Reserve Car" or "Book Now" button and fill out the booking form with your pickup location, destination, date, and time. Then, click "Submit" to complete the reservation.
+          </div>
+        </details>
+        <details>
+          <summary>
+            <span class="faq-title">
+                What types of vehicles are available for rent?
+            </span>
+            <img src="{% static '/assets/images/plus.svg' %}" class="expand-icon" />
+          </summary>        
+          <div class="faq-content">
+            We offer a variety of vehicles, including compact cars, SUVs, luxury cars, vans, and more. You can browse our Car List options on our website. 
+          </div>
+        </details>
+        <details>
+          <summary>
+            <span class="faq-title">How do I return the vehicle after the rental period ends?</span>
+            <img src="{% static '/assets/images/plus.svg' %}" class="expand-icon" />
+          </summary>        
+          <div class="faq-content">You can return the vehicle to our designated rental location. Please ensure that the vehicle is returned on time and in the same condition as when it was rented..</div>
+        </details>
+        <details>
+          <summary>
+            <span class="faq-title">What documents are required for renting a vehicle?</span>
+            <img src="{% static '/assets/images/plus.svg' %}" class="expand-icon" />
+          </summary>        
+          <div class="faq-content">You will generally need a valid driver's license, proof of insurance, and a valid payment method (credit card). International renters may need additional documentation.</div>
+        </details>
+        <details>
+          <summary>
+            <span class="faq-title">How can I contact customer support if I have further questions or issues?</span>
+            <img src="{% static '/assets/images/plus.svg' %}" class="expand-icon" />
+          </summary>        
+          <div class="faq-content"> You can reach our customer support team via phone, email, or our website's contact form. We are here to assist you with any inquiries or concerns.</div>
+        </details>
+      </div>
+    <!-- footer section starts  -->
+
+    <section class="footer">
+
+        <div class="box-container">
+    
+            <div class="box" data-aos="fade-up" data-aos-delay="150">
+                <a href="#" class="logo"> <span>CHIM</span>JOY</a>
+                <p>For inquiries, reservations, or to experience our exceptional car hire services, please don't
+                    hesitate to contact us:</p>
+                <div class="share">
+                    <a href="#" class="fab fa-facebook-f"></a>
+                    <a href="#" class="fab fa-twitter"></a>
+                    <a href="#" class="fab fa-instagram"></a>
+                    <a href="#" class="fab fa-linkedin"></a>
+                </div>
+            </div>
+    
+            <div class="box" data-aos="fade-up" data-aos-delay="300">
+                <h3>Quick links</h3>
+                <a href="{% url 'dashboard' %}" class="links"> <i class="fas fa-arrow-right"></i> Home </a>
+                <a href="{% url 'booking' %}" class="links"> <i class="fas fa-arrow-right"></i>Ride </a>
+                <a href="{% url 'carlist' %}" class="links"> <i class="fas fa-arrow-right"></i> Rent </a>
+                <a href="{% url 'about' %}" class="links"> <i class="fas fa-arrow-right"></i> About Us </a>
+                <a href="{% url 'contact' %}" class="links"> <i class="fas fa-arrow-right"></i>Contact Us</a>
+                
+            </div>
+    
+            <div class="box" data-aos="fade-up" data-aos-delay="350">
+                <h3>Contact info</h3>
+                <p> <i class="fas fa-map"></i> Corporate Office:
+                    65 Christ Church Road, Owerri, Imo State. </p>
+                <p> <i class="fas fa-phone"></i> +2348077880262 </p>
+                <p> <i class="fas fa-envelope"></i> hq@chimjoylogistics.com.ng </p>
+                <p> <i class="fas fa-clock"></i> 7:00am - 10:00pm </p>
+            </div>
+    
+            <div class="box" data-aos="fade-up" data-aos-delay="300">
+                <h3>Newsletter</h3>
+                <p>Subscribe for latest updates</p>
+                <form action="">
+                    <input type="email" name="" placeholder="Enter your email" class="email" id="">
+                    <input type="submit" value="Subscribe" class="btn">
+                </form>
+            </div>
+    
+        </div>
+    
+    </section>
+    
+    <div class="credit"><p> Copyright @  Chimjoy logistics 2023 All rights reserved!</p>
+    <p>designed by <a href="https://bestlinkdigitaltech.com/" target="_blank" style="cursor: pointer; color: #007bff;"> Best Link Digital Tech</a></p></div>
+    
+    <!-- footer section ends -->
+
+  
+
+<!-- <script src="./js/carlist.js"></script> -->
+<!-- <script>
+//     let navbar = document.querySelector('.header .navbar');
+
+// document.querySelector('#menu-btn').onclick = () =>{
+//     navbar.classList.toggle('active');
+// }
+
+// window.onscroll = () =>{
+//     navbar.classList.remove('active');
+// }
+
+// document.querySelectorAll('.about .video-container .controls .control-btn').forEach(btn =>{
+//     btn.onclick = () =>{
+//         let src = btn.getAttribute('data-src');
+//         document.querySelector('.about .video-container .video').src = src;
+//     }
+// })
+    // Function to switch tabs
+    function switchTab(tabId) {
+      // Hide all tab contents
+      const tabContents = document.querySelectorAll('.tab-content');
+      tabContents.forEach((content) => {
+        content.classList.remove('active');
+      });
+  
+      // Deactivate all tab links
+      const tabLinks = document.querySelectorAll('.tabs a');
+      tabLinks.forEach((link) => {
+        link.classList.remove('active');
+      });
+  
+      // Show the selected tab content
+      const selectedTab = document.getElementById(tabId + '-content');
+      selectedTab.classList.add('active');
+  
+      // Activate the clicked tab link
+      const selectedTabLink = document.getElementById(tabId);
+      selectedTabLink.classList.add('active');
+    }
+  
+    // Add click event listeners to the tab links
+    const tabLinks = document.querySelectorAll('.tabs a');
+    tabLinks.forEach((link) => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        const tabId = link.getAttribute('href').substr(1); // Get the target tab id
+        switchTab(tabId);
+      });
+    });
+  
+    // Initially, display the first tab
+    switchTab('tab1');
+
+//     // Function to get the user's current location
+// // Function to get the user's current location
+// function getCurrentLocation() {
+//     if ("geolocation" in navigator) {
+//         navigator.geolocation.getCurrentPosition(function (position) {
+//             const latitude = position.coords.latitude;
+//             const longitude = position.coords.longitude;
+            
+//             const pickupLocationInput = document.getElementById("pickupLocation");
+//             pickupLocationInput.value = "Your Current Location"; // Replace with actual address
+//         });
+//     } else {
+//         alert("Geolocation is not available in your browser.");
+//     }
+// }
+
+// // Automatically request and populate the pickup location when the page loads
+// window.addEventListener("load", getCurrentLocation);
+
+// // Event listener for the form submission
+// const rideForm = document.getElementById("rideForm");
+// rideForm.addEventListener("submit", function (e) {
+//     e.preventDefault();
+//     // You can handle form submission here, e.g., sending data to a server.
+//     // Access the form inputs using document.getElementById or other methods.
+// });
+
+
+
+</script> -->
+<script src="{% static '/js/ride.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+
+    AOS.init({
+        duration: 800,
+        offset: 150,
+    });
+
+</script>
+</body>
+</html>

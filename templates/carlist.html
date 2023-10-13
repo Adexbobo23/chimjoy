@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChimJoy</title>
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+ 
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <style>
+        /* Style for the form */
+#bookingForm {
+    /* padding: 15px; */
+    /* background-color: #007BFF; */
+    border-radius: 5px;
+    /* color: white; */
+}
+#bookingForm span{
+    /* font-weight: bold;  */
+    display: flex;
+    text-align: left;
+    justify-content: flex-start;
+    margin-bottom: 5px;
+   
+}
+
+
+
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 100000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.778);
+    backdrop-filter: blur(5px);
+}
+
+.title-wrapper input{
+    padding: 1em;
+    background: #007BFF; 
+    color: white;
+    border-radius: 10px;
+}
+.title-wrapper input::placeholder{
+    padding: .3em .6em;
+    background: #007BFF; 
+    color: white;
+}
+.title-wrapper button{
+    padding: 1em;
+    background: #28a745; 
+    color: white;
+    border-radius: 10px;
+}
+#totalPricePerHour{
+    color: #000;
+}
+
+    </style>
+
+    <!-- custom js file link  -->
+    <!-- <script src="js/script.js" defer></script> -->
+
+</head>
+
+<body>
+
+    <!-- header section starts  -->
+
+    <header class="header">
+
+        <div id="menu-btn" class="fas fa-bars"></div>
+
+        <a data-aos="zoom-in-left" data-aos-delay="150" href="#" class="logo"><span>CHIM</span>JOY
+        </a>
+
+        <nav class="navbar">
+            <a data-aos="zoom-in-left" data-aos-delay="300" href="{% url 'dashboard' %}">Home</a>
+            <a data-aos="zoom-in-left" data-aos-delay="1150" href="{% url 'booking' %}" >Ride</a>
+            <a data-aos="zoom-in-left" data-aos-delay="1150" href="{% url 'carlist' %}"style="color: #007bff;" >Rent</a>
+            
+            <a data-aos="zoom-in-left" data-aos-delay="450" href="{% url 'about' %}" >About us</a>
+            <a data-aos="zoom-in-left" data-aos-delay="600" href="{% url 'contact' %}" >Contact us</a >
+    
+        </nav>
+
+        <!-- <div class="user-profile">
+        <div class="profile-dropdown">
+            <img src="./asset/img/5da839b0c6b3d.png" alt="User Profile" class="profile-img">
+            <div class="user-info">
+                <span class="user-name">John Doe</span>
+                <span class="user-email">john@example.com</span>
+            </div>
+            <div class="dropdown-icon"><i class="fas fa-chevron-down"></i></div>
+            <div class="dropdown-content">
+                <ul class="user-details">
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="#">Settings</a></li>
+                    <li><a href="#">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+        </div> -->
+    </header>
+
+    <section class="home" id="home">
+
+        <div class="content">
+            <span data-aos="zoom-in" data-aos-delay="150">Effortless Hiring</span>
+            <!-- <h3 data-aos="fade-up" data-aos-delay="300">Your journey begins here</h3> -->
+            <p data-aos="fade-up" data-aos-delay="450">Our User Friendly Interface makes renting a car a breeze. Complete the entire booking process in just a few clicks. Our platform is accessible anytime, anywhere at your convenience</p>
+            <a data-aos="fade-up" data-aos-delay="600" href="{% url 'booking' %}" class="btn">Book a Ride</a>
+            <a data-aos="fade-up" data-aos-delay="300" href="{% url 'contact' %}" class="btn" >Contact Us</a>
+        </div>
+
+    </section>
+    <section class="section featured-car" id="featured-car">
+        <div class="containers">
+
+          <div class="title-wrapper">
+            <h2 class="h2 section-title">Car Listings</h2>
+             
+            <input type="text" id="filterName" placeholder="Filter by name">
+            <input type="number" id="filterMinPrice" placeholder="Minimum price">
+            <input type="number" id="filterMaxPrice" placeholder="Maximum price">
+            <button id="applyFilter"><a href="{% url 'booking' %}" style="color: white;">Apply Filter</a></button>
+            <button id="resetFilter"><a href="{% url 'carlist' %}" style="color: white;">Reset Filter</a></button>
+          </div>
+
+          <ul class="featured-car-list" id="carList">
+            {% for vehicle in vehicles %}
+            <div class="card" style="width: 18rem;">
+                <img src="{{ vehicle.picture.url }}" class="card-img-top" alt="{{ vehicle.make }} {{ vehicle.model }}">
+                <div class="card-body">
+                    <h2 class="card-title">{{ vehicle.year }} {{ vehicle.make }} {{ vehicle.model }}</h2>
+                    <!-- <p class="card-text">Price: ${{ vehicle.price }}</p> -->
+                    <p class="card-text">Color: {{ vehicle.color }}</p>
+                    <p class="card-text">License Plate: {{ vehicle.license_plate }}</p>
+                    <p class="card-text">Vehicle Type: {{ vehicle.vehicle_type }}</p>
+                    <p class="card-text">Passenger Capacity: {{ vehicle.passenger_capacity }}</p>
+                    {% if vehicle.cargo_capacity %}
+                    <p class="card-text">Cargo Capacity: {{ vehicle.cargo_capacity }} cu. ft.</p>
+                    {% endif %}
+                    <p class="card-text">Fuel Type: {{ vehicle.fuel_type }}</p>
+                    <p class="card-text">Registration Number: {{ vehicle.registration_number }}</p>
+                    <p class="card-text">{{ vehicle.description }}</p>
+                    <a href="{% url 'booking' %}" class="btn btn-primary">Book Now</a>
+                </div>
+            </div>
+            {% endfor %}
+        </ul>
+        
+        </div>
+      </section>
+    
+
+
+  <!-- footer section starts  -->
+
+  <section class="footer">
+
+    <div class="box-container">
+
+        <div class="box" data-aos="fade-up" data-aos-delay="150">
+            <a href="#" class="logo"> <span>CHIM</span>JOY</a>
+            <p>For inquiries, reservations, or to experience our exceptional car hire services, please don't
+                hesitate to contact us:</p>
+            <div class="share">
+                <a href="#" class="fab fa-facebook-f"></a>
+                <a href="#" class="fab fa-twitter"></a>
+                <a href="#" class="fab fa-instagram"></a>
+                <a href="#" class="fab fa-linkedin"></a>
+            </div>
+        </div>
+
+        <div class="box" data-aos="fade-up" data-aos-delay="300">
+            <h3>Quick links</h3>
+            <a href="index.html" class="links"> <i class="fas fa-arrow-right"></i> Home </a>
+            <a href="{% url 'booking' %}" class="links"> <i class="fas fa-arrow-right"></i>Ride </a>
+            <a href="{% url 'carlist' %}" class="links"> <i class="fas fa-arrow-right"></i> Rent </a>
+            <a href="{% url 'about' %}" class="links"> <i class="fas fa-arrow-right"></i> About Us </a>
+            <a href="{% url 'contact' %}" class="links"> <i class="fas fa-arrow-right"></i>Contact Us</a>
+            
+        </div>
+
+        <div class="box" data-aos="fade-up" data-aos-delay="350">
+            <h3>Contact info</h3>
+            <p> <i class="fas fa-map"></i> Corporate Office:
+                65 Christ Church Road, Owerri, Imo State. </p>
+            <p> <i class="fas fa-phone"></i> +2348077880262 </p>
+            <p> <i class="fas fa-envelope"></i> hq@chimjoylogistics.com.ng </p>
+            <p> <i class="fas fa-clock"></i> 7:00am - 10:00pm </p>
+        </div>
+
+        <div class="box" data-aos="fade-up" data-aos-delay="300">
+            <h3>Newsletter</h3>
+            <p>Subscribe for latest updates</p>
+            <form action="">
+                <input type="email" name="" placeholder="Enter your email" class="email" id="">
+                <input type="submit" value="Subscribe" class="btn">
+            </form>
+        </div>
+
+    </div>
+
+</section>
+
+<div class="credit">
+    <p> Copyright @  Chimjoy logistics 2023 All rights reserved!</p>
+    <p>designed by <a href="https://bestlinkdigitaltech.com/" target="_blank" style="cursor: pointer; color: #007bff;"> Best Link Digital Tech</a></p>
+</div>
+
+<!-- footer section ends -->
+
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script src="{% static '/js/carlist.js' %}"></script>
+
+<script>
+
+    AOS.init({
+        duration: 800,
+        offset: 150,
+    });
+
+</script>
+
+</body>

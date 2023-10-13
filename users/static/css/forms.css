@@ -1,0 +1,91 @@
+form.conc {
+    text-align: center;
+}
+
+/* Style the Use My Location button */
+button.btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 50px;
+}
+
+/* Style the booking-container divs */
+div.booking-container {
+    margin: 50px 0;
+}
+
+/* Style labels */
+label {
+    display: block;
+    text-align: left;
+}
+
+/* Style input fields */
+input[type="text"],
+input[type="date"],
+input[type="time"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 50px;
+}
+
+/* Style the Book Ride button */
+input.buttons {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    height: 50px;
+}
+
+/* Add more custom styles as needed */
+
+#card {
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card-body {
+    margin-top: 10px;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}

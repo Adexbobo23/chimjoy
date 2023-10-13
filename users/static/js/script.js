@@ -1,0 +1,150 @@
+// Get modal elements
+const loginModal = document.getElementById('loginModal');
+const registerModal = document.getElementById('registerModal');
+
+// Get buttons to open modals
+const loginButton = document.getElementById('loginButton');
+const registerButton = document.getElementById('registerButton');
+
+// Get close buttons for modals
+const loginClose = document.getElementById('loginClose');
+const registerClose = document.getElementById('registerClose');
+
+// Function to open the login modal
+loginButton.addEventListener('click', () => {
+    loginModal.style.display = 'block';
+});
+
+// Function to open the register modal
+registerButton.addEventListener('click', () => {
+    registerModal.style.display = 'block';
+});
+
+// Function to close the login modal
+loginClose.addEventListener('click', () => {
+    loginModal.style.display = 'none';
+});
+
+// Function to close the register modal
+registerClose.addEventListener('click', () => {
+    registerModal.style.display = 'none';
+});
+
+// Close modals when clicking outside of them
+window.addEventListener('click', (e) => {
+    if (e.target === loginModal) {
+        loginModal.style.display = 'none';
+    }
+
+    if (e.target === registerModal) {
+        registerModal.style.display = 'none';
+    }
+});
+
+function toggleProfileDropdown() {
+    const dropdownContent = document.querySelector('.dropdown-content');
+    dropdownContent.classList.toggle('active');
+}
+
+class Accordion {
+    constructor(el) {
+        this.el = el;
+        this.summary = el.querySelector('summary');
+        this.content = el.querySelector('.faq-content');
+        this.expandIcon = this.summary.querySelector('.expand-icon');
+        this.animation = null;
+        this.isClosing = false;
+        this.isExpanding = false;
+        this.summary.addEventListener('click', (e) => this.onClick(e));
+    }
+
+    onClick(e) {
+        e.preventDefault();
+        this.el.style.overflow = 'hidden';
+
+        if (this.isClosing || !this.el.open) {
+            this.open();
+        } else if (this.isExpanding || this.el.open) {
+            this.shrink();
+        }
+    }
+
+    shrink() {
+        this.isClosing = true;
+
+        const startHeight = `${this.el.offsetHeight}px`;
+        const endHeight = `${this.summary.offsetHeight}px`;
+
+        if (this.animation) {
+            this.animation.cancel();
+        }
+
+        this.animation = this.el.animate({
+            height: [startHeight, endHeight]
+        }, {
+            duration: 400,
+            easing: 'ease-out'
+        });
+
+        this.animation.onfinish = () => {
+            this.expandIcon.setAttribute('src', './assets/images/plus.svg');
+            return this.onAnimationFinish(false);
+        }
+        this.animation.oncancel = () => {
+            this.expandIcon.setAttribute('src', './assets/images/plus.svg');
+            return this.isClosing = false;
+        }
+    }
+
+    open() {
+        this.el.style.height = `${this.el.offsetHeight}px`;
+        this.el.open = true;
+        window.requestAnimationFrame(() => this.expand());
+    }
+
+    expand() {
+        this.isExpanding = true;
+
+        const startHeight = `${this.el.offsetHeight}px`;
+        const endHeight = `${this.summary.offsetHeight +
+            this.content.offsetHeight}px`;
+
+        if (this.animation) {
+            this.animation.cancel();
+        }
+
+        this.animation = this.el.animate({
+            height: [startHeight, endHeight]
+        }, {
+            duration: 350,
+            easing: 'ease-out'
+        });
+
+        this.animation.onfinish = () => {
+            this.expandIcon.setAttribute(
+                'src',
+                './assets/images/minus.svg'
+            );
+            return this.onAnimationFinish(true);
+        }
+        this.animation.oncancel = () => {
+            this.expandIcon.setAttribute(
+                'src',
+                './assets/images/minus.svg'
+            );
+            return this.isExpanding = false;
+        }
+    }
+
+    onAnimationFinish(open) {
+        this.el.open = open;
+        this.animation = null;
+        this.isClosing = false;
+        this.isExpanding = false;
+        this.el.style.height = this.el.style.overflow = '';
+    }
+}
+
+document.querySelectorAll('details').forEach((el) => {
+    new Accordion(el);
+});
